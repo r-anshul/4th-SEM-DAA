@@ -1,0 +1,44 @@
+#include <stdio.h>
+
+int main()  //w1q2(c)
+{
+   int n,c=0,k,t,l=0,m,h;
+   printf("Enter Test Cases - ");
+   scanf("%d",&t);
+   for(int j=1;j<=t;j++)
+   {
+   printf("\nEnter size - ");
+   scanf("%d",&n);
+   int A[n];
+   h=n-1;
+   m=n/2;
+   printf("Enter elements - ");
+   for(int i=0;i<n;i++)
+   {
+       scanf("%d",&A[i]);
+   }
+   printf("Enter element to be searched - ");
+   scanf("%d",&k);
+   while(1)
+   {
+       c++;
+       if(k==A[m])
+       {
+       printf("Element Found\n");
+       break;
+       }
+       else if(k<A[m])
+       {
+           h=m-1;
+           m=(l+h)/2;
+       }
+       else if(k>A[m])
+       {
+           l=m+1;
+           m=(l+h)/2;
+       }
+   }
+   printf("Number of comparisons - %d",c);
+   }
+   return 0;
+}
