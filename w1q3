@@ -1,0 +1,48 @@
+#include <stdlib.h>  //w1q3
+#include <iostream>
+#include <math.h>
+
+using namespace std;
+
+void lin(int k,int l, int h,double A[])
+{
+  for(int i=l;i<=h;i++)
+  {
+    if(k==A[i])
+    {
+    cout<<"\nITEM FOUND";
+    break;
+  }
+  }
+}
+
+int main()
+{
+  int n,k,s,in;
+  cout<<"Enter size - ";
+  cin>>n;
+  double A[n];
+  cout<<"Enter elements\n";
+  for(int i=0;i<n;i++)
+  {
+    cin>>A[i];
+  }
+  cout<<"Enter exponent - ";
+  cin>>s;
+  cout<<"\nEnter item to search - ";
+  cin>>k;
+  for(int i=0;i<n;i++)
+  {
+    in=static_cast<int>(pow(s,i));
+    int in2=static_cast<int>(pow(s,i+1));
+    if(k==A[in])
+    {
+      cout<<"\nItem found";
+      break;
+    }
+    else  if(k>A[in]&&k>A[in2])
+        {
+           lin(k,A[in],A[in2],A);
+        }
+  }
+}
