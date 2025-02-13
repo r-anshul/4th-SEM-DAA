@@ -3,13 +3,12 @@ using namespace std;
 
 int main()
 {
-    int f = 0;
     int t,k;
     cout<<"Enter Test Cases - ";
     cin>>t;
     for (int j=1;j<=t;j++)
     {
-        int n,c=0,k,l=0,m,h;
+        int n,c=0,k;
         cout<<"\nEnter size - ";
         cin>>n;
         int A[n];
@@ -24,10 +23,10 @@ int main()
             for(int j=i+1;j<n;j++)
             {
                 if((A[i]-A[j])==k||(A[j]-A[i])==k)
-                f++;
+                c++;
             }
         }
-        cout<<f;
+        cout<<c;
     }
     return 0;
 }
