@@ -1,0 +1,51 @@
+#include <iostream> //w2q1
+using namespace std;
+int chk(int A[],int l,int h, int k)
+{
+    int d=-1;
+    for(int i=l;i<h;i++)
+    {
+        if(A[i]==k)
+        d++;
+    }
+    return d;
+}
+int main()
+{
+    int t;
+    cout<<"Enter Test Cases - ";
+    cin>>t;
+    for (int j=1;j<=t;j++)
+    {
+        int n,c=0,k,l=0,m,h;
+        cout<<"\nEnter size - ";
+        cin>>n;
+        int A[n];
+        h=n-1;
+        m=n/2;
+        cout<<"Enter elements - ";
+        for(int i=0;i<n;i++)
+            cin>>A[i];
+        cout<<"Enter element to be searched - ";
+        cin>>k;
+        while(true)
+        {
+            if(k==A[m])
+            {
+                cout<<"Element Found"<<endl;
+                c=chk(A,l,h,k);
+                break;
+            } else if(k<A[m])
+            {
+                h=m-1;
+                m=(l+h)/2;
+            } else if(k>A[m])
+            {
+                l=m+1;
+                m=(l+h)/2;
+            }
+        }
+        cout<<"Number of copies - "<<c<<endl;
+    }
+    return 0;
+}
