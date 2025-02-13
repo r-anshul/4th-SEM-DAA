@@ -3,12 +3,11 @@ using namespace std;
 
 int main()
 {
-    int t,k;
+    int t,k,n,c=0;
     cout<<"Enter Test Cases - ";
     cin>>t;
     for (int j=1;j<=t;j++)
     {
-        int n,c=0,k;
         cout<<"\nEnter size - ";
         cin>>n;
         int A[n];
