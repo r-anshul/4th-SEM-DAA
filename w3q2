@@ -1,0 +1,42 @@
+#include <iostream> //w3q2
+using namespace std;
+
+int main()
+{
+    int t,n,c=0,c2=0,te;
+    cout<<"Enter Test Cases - ";
+    cin>>t;
+    for (int j=1;j<=t;j++)
+    {
+        cout<<"\nEnter size - ";
+        cin>>n;
+        int A[n];
+        cout<<"Enter elements - ";
+        for(int i=0;i<n;i++)
+            cin>>A[i];
+        for(int i=0;i<n-1;i++)
+        {
+            int b=i;
+            for(int j=i+1;j<n;j++)
+            {
+                if(A[j]<A[b])
+                    b=j;
+                c++;
+            }
+            if(b!=i)
+            {
+                te = A[i];
+                A[i]=A[b];
+                A[b]=te;
+                c2++;
+            }
+        }
+        for(int i=0;i<n;i++)
+        {
+            cout<<A[i]<<" ";
+        }
+        cout<<"\nComparisons "<<c;
+        cout<<"\nSwaps - "<<c2;
+    }
+    return 0;
+}
