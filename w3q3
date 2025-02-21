@@ -1,0 +1,62 @@
+#include <iostream>  //mergesort
+using namespace std;
+void mrg(int A[], int l, int m, int r)
+{
+    int i=l,j=m+1,k=0;
+    int B[r-l+1];
+    while(i<=m&&j<=r)
+    {
+        if(A[i]<A[j])
+        {
+            B[k++]=A[i++];
+        }
+        else
+        {
+            B[k++]=A[j++];
+        }
+    }
+    while(i<=m)
+    {
+        B[k++]=A[i++];
+    }
+    while(j<=r)
+    {
+        B[k++]=A[j++];
+    }
+    for(i=l;i<=r;i++)
+    {
+        A[i]=B[i-l];
+    }
+}
+void msrt(int A[], int l, int r)
+{
+    if(l<r)
+    {
+        int m=l+(r-l)/2;
+        msrt(A,l,m);
+        msrt(A,m+1,r);
+        mrg(A,l,m,r);
+    }
+}
+int main()
+{
+    int n;
+    bool f = false;
+    cin>>n;
+    int A[n];
+    for(int i=0;i<n;i++)
+    {
+        cin>>A[i];
+    }
+    msrt(A,0,n-1);
+    for(int i=0;i<n-1;i++)
+    {
+        if(A[i]==A[i+1])
+        {
+            f=true;
+            break;
+        }
+    }
+    f?cout<<"YES":cout<<"NO";
+    return 0;
+}
