@@ -1,0 +1,46 @@
+#include <iostream> //w4q2
+using namespace std;
+int part(int A[], int l, int u)
+{
+    int s=l,e=u,t;
+    int k=A[l];
+    while(s < e)
+    {
+        while(A[s] <= k) s++;
+        while(A[e] > k) e--;
+        if(s<e)
+        {
+            t=A[s];
+            A[s]=A[e];
+            A[e]=t;
+        }
+    }
+    t=A[l];
+    A[l]=A[e];
+    A[e]=t;
+    return e;
+}
+void qsr(int A[], int l, int u)
+{
+    if(l<u)
+    {
+        int lc=part(A, l, u);
+        qsr(A,l,lc-1);
+        qsr(A,lc+1,u);
+    }
+}
+int main()
+{
+    int n;
+    cout<<"Enter size -  ";
+    cin>>n;
+    int A[n];
+    cout<<"Enter elements - ";
+    for(int i=0;i<n;i++)
+        cin>>A[i];
+    qsr(A,0,n-1);
+    cout<<"Elements after sorting - ";
+    for(int i=0;i<n;i++)
+        cout<<A[i]<<" ";
+    return 0;
+}
