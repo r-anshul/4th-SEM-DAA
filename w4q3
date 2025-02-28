@@ -1,0 +1,36 @@
+#include<iostream>  //w4q3
+using namespace std;
+
+int main()
+{
+    int n,i,j=0,k;
+    cout<<"Enter Size - ";
+    cin>>n;
+    int A[n];
+    cout<<"Enter Elements - ";
+    for(i=0;i<n;i++)
+        cin>>A[i];
+    int m=A[0];
+    cout<<"Enter 'k' - ";
+    cin>>k;
+    for(i=1;i<n;i++)
+        if(A[i]>m)
+            m=A[i];
+    int B[m+1]={0};
+    for(i=0;i<n;i++)
+        B[A[i]]++;
+    int C[n];
+    j=0;
+    for(i=0;i<=m;i++)
+    {
+        while(B[i]>0)
+        {
+            C[j]=i;
+            j++;
+            B[i]--;
+        }
+    }
+    cout<<"'Kth' Smallest & Largest - ";
+        cout<<C[k-1]<<" "<<C[n-k+1];
+    return 0;
+}
