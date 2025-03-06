@@ -1,0 +1,73 @@
+#include <iostream>
+using namespace std;
+void mrg(int A[], int l, int m, int r)
+{
+    int i=l,j=m+1,k=0;
+    int B[r-l+1];
+    while(i<=m&&j<=r)
+    {
+        if(A[i]<A[j])
+        {
+            B[k++]=A[i++];
+        }
+        else
+        {
+            B[k++]=A[j++];
+        }
+    }
+    while(i<=m)
+    {
+        B[k++]=A[i++];
+    }
+    while(j<=r)
+    {
+        B[k++]=A[j++];
+    }
+    for(i=l;i<=r;i++)
+    {
+        A[i]=B[i-l];
+    }
+}
+void msrt(int A[], int l, int r)
+{
+    if(l<r)
+    {
+        int m=l+(r-l)/2;
+        msrt(A,l,m);
+        msrt(A,m+1,r);
+        mrg(A,l,m,r);
+    }
+}
+int main()
+{
+    int n,l=0,r,s=0,k;
+    bool f = false;
+    cin>>n;
+    r=n-1;
+    int A[n];
+    for(int i=0;i<n;i++)
+    {
+        cin>>A[i];
+    }
+    cin>>k;
+    msrt(A,0,n-1);
+    while(!f)
+    {
+    	if(l==r)
+    		break;
+		s=A[l]+A[r];
+    	if(s==k)
+    	{
+    		f=true;
+    		break;
+		}
+		else if(s>k)
+			r--;
+		else if(s<k)
+			l++;
+	}
+    if(f==true)
+		cout<<A[l]<<" "<<A[r];
+	else cout<<"No Such elements found";
+    return 0;
+}
