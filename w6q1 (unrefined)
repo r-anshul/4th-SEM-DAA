@@ -3,25 +3,24 @@
 #include <stack>
 
 using namespace std;
-
-bool dfs(int start, int end, int V, vector<vector<int>>& adj)
+bool dfs(int st, int end, int V, vector<vector<int>>& A)
 {
-    vector<bool> visited(V, false);
-    stack<int> s;
-    s.push(start);
-    visited[start] = true;
-    while(!s.empty())
+    vector<int> vi(V,0);
+    stack<int> S;
+    S.push(st);
+    vi[st]=1;
+    while(!S.empty())
     {
-        int node = s.top();
-        s.pop();
-        if (node == end)
+        int node = S.top();
+        S.pop();
+        if(node == end)
             return true;
-        for (int i = 0; i < V; ++i)
+        for(int i=0;i<V;++i)
         {
-            if (adj[node][i] == 1 && !visited[i])
+            if (A[node][i]==1&&!vi[i])
             {
-                visited[i] = true;
-                s.push(i);
+                vi[i]=1;
+                S.push(i);
             }
         }
     }
@@ -29,28 +28,27 @@ bool dfs(int start, int end, int V, vector<vector<int>>& adj)
 }
 int main()
 {
-    int V, E;
-    cout << "Enter number of vertices: ";
-    cin >> V;
-    vector<vector<int>> adj(V, vector<int>(V, 0));
-    cout << "Enter number of edges: ";
-    cin >> E;
-    cout << "Enter edges (u v) format: " << endl;
-    for (int i = 0; i < E; ++i)
+    int v,e,a,b;
+    cout<<"Enter number of vertices - ";
+    cin>>v;
+    vector<vector<int>> A(v,vector<int>(v, 0));
+    cout<<"Enter number of edges - ";
+    cin>>e;
+    cout<<"Enter edges - "<<endl;
+    for(int i=0;i<e;++i)
     {
-        int u, v;
-        cin >> u >> v;
-        adj[u][v] = 1;
-        adj[v][u] = 1;
+        cin>>a>>b;
+        A[a][b]=1;
+        A[b][a]=1;
     }
     int start, end;
-    cout << "Enter start node: ";
-    cin >> start;
-    cout << "Enter end node: ";
-    cin >> end;
-    if (dfs(start, end, V, adj))
-        cout << "Path exists";
+    cout<<"Enter start node - ";
+    cin>>start;
+    cout<<"Enter end node -";
+    cin>>end;
+    if(dfs(start,end,v,A))
+        cout<<"Path exists";
     else
-        cout << "No path exists";
+        cout<<"No path exists";
     return 0;
 }
