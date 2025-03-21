@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+#include <stack>
+
+using namespace std;
+
+bool dfs(int start, int end, int V, vector<vector<int>>& adj)
+{
+    vector<bool> visited(V, false);
+    stack<int> s;
+    s.push(start);
+    visited[start] = true;
+    while(!s.empty())
+    {
+        int node = s.top();
+        s.pop();
+        if (node == end)
+            return true;
+        for (int i = 0; i < V; ++i)
+        {
+            if (adj[node][i] == 1 && !visited[i])
+            {
+                visited[i] = true;
+                s.push(i);
+            }
+        }
+    }
+    return false;
+}
+int main()
+{
+    int V, E;
+    cout << "Enter number of vertices: ";
+    cin >> V;
+    vector<vector<int>> adj(V, vector<int>(V, 0));
+    cout << "Enter number of edges: ";
+    cin >> E;
+    cout << "Enter edges (u v) format: " << endl;
+    for (int i = 0; i < E; ++i)
+    {
+        int u, v;
+        cin >> u >> v;
+        adj[u][v] = 1;
+        adj[v][u] = 1;
+    }
+    int start, end;
+    cout << "Enter start node: ";
+    cin >> start;
+    cout << "Enter end node: ";
+    cin >> end;
+    if (dfs(start, end, V, adj))
+        cout << "Path exists";
+    else
+        cout << "No path exists";
+    return 0;
+}
