@@ -1,0 +1,89 @@
+#include <iostream>
+#include <climits>
+using namespace std;
+
+#define MN 100
+
+// Structure to represent an edge
+struct Edge {
+    int u, v, weight;
+};
+
+void bellmanFord(int g[MN][MN], int n, int m, int source) {
+    int dist[MN], parent[MN];
+
+    // Initialize distances and parents
+    for (int i = 0; i < n; i++) {
+        dist[i] = INT_MAX;
+        parent[i] = -1;
+    }
+    dist[source] = 0;
+
+    // Relax all edges n-1 times
+    for (int i = 1; i <= n - 1; i++) {
+        for (int u = 0; u < n; u++) {
+            for (int v = 0; v < n; v++) {
+                if (g[u][v] != -1 && dist[u] != INT_MAX && dist[u] + g[u][v] < dist[v]) {
+                    dist[v] = dist[u] + g[u][v];
+                    parent[v] = u;
+                }
+            }
+        }
+    }
+
+    // Check for negative weight cycles
+    for (int u = 0; u < n; u++) {
+        for (int v = 0; v < n; v++) {
+            if (g[u][v] != -1 && dist[u] != INT_MAX && dist[u] + g[u][v] < dist[v]) {
+                cout << "Graph contains negative weight cycle!" << endl;
+                return;
+            }
+        }
+    }
+
+    // Output the results
+    for (int i = 0; i < n; i++) {
+        cout << "Distance from " << source << " to " << i << " - " << dist[i] << "\nPath: ";
+        if (dist[i] == INT_MAX) {
+            cout << "No path\n";
+            continue;
+        }
+
+        // Reconstruct the path
+        int path[MN];
+        int idx = 0;
+        for (int v = i; v != -1; v = parent[v]) path[idx++] = v;
+        for (int j = idx - 1; j >= 0; j--) cout << path[j] << " ";
+        cout << "\n";
+    }
+}
+
+int main() {
+    int n, m;
+    cout << "Enter number of nodes - ";
+    cin >> n;
+    cout << "Enter number of edges - ";
+    cin >> m;
+
+    int g[MN][MN];
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            g[i][j] = -1;
+        }
+    }
+
+    cout << "Enter the edges (u, v, weight)-\n";
+    for (int i = 0; i < m; i++) {
+        int u, v, w;
+        cin >> u >> v >> w;
+        g[u][v] = w;
+        g[v][u] = w;
+    }
+
+    int source;
+    cout << "Enter Akshay's house index -  ";
+    cin >> source;
+
+    bellmanFord(g, n, m, source);
+    return 0;
+}
