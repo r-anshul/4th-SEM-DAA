@@ -1,1 +1,76 @@
-After end term examination, Akshay wants to party with his friends. All his friends are living aspaying guest and it has been decided to first gather at Akshay’s house and then move towardsparty location. The problem is that no one knows the exact address of his house in the city.Akshay as a computer science wizard knows how to apply his theory subjects in his real life andcame up with an amazing idea to help his friends. He draws a graph by looking in to location ofhis house and his friends’ location (as a node in the graph) on a map. He wishes to find outshortest distance and path covering that distance from each of his friend’s location to his houseand then whatsapp them this path so that they can reach his house in minimum time. Akshay hasdeveloped the program that implements Dijkstra’s algorithm but not sure about correctness ofresults. Can you also implement the same algorithm and verify the correctness of Akshay’sresults? (Hint: Print shortest path and distance from friends’ location to Akshay’s house)
+#include <iostream>
+#include <climits>
+#include <queue>
+using namespace std;
+#define MN 100
+void dijkstra(int g[MN][MN], int n, int source)
+{
+    int dist[MN], parent[MN];
+    bool vi[MN] = {false};
+    for (int i = 0; i < n; i++)
+    {
+        dist[i] = INT_MAX;
+        parent[i] = -1;
+    }
+    dist[source] = 0;
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    pq.push({0, source});
+    while (!pq.empty())
+    {
+        int u = pq.top().second;
+        pq.pop();
+        if (vi[u]) continue;
+        vi[u] = true;
+        for (int v = 0; v < n; v++)
+        {
+            if(g[u][v]!=-1&&!vi[v] && dist[u]+g[u][v]<dist[v])
+            {
+                dist[v] = dist[u]+g[u][v];
+                parent[v] = u;
+                pq.push({dist[v], v});
+            }
+        }
+    }
+    for(int i=0;i<n;i++)
+    {
+        cout<<"Distance from "<<source<<" to "<<i<<" - "<<dist[i]<<"\nPath: ";
+        if (dist[i] == INT_MAX)
+        {
+            cout << "No path\n";
+            continue;
+        }
+        int path[MN];
+        int idx = 0;
+        for (int v = i; v != -1; v = parent[v]) path[idx++] = v;
+        for (int j = idx - 1; j >= 0; j--) cout << path[j] << " ";
+        cout << "\n";
+    }
+}
+int main()
+{
+    int n, m;
+    cout << "Enter number of nodes - ";
+    cin >> n;
+    cout << "Enter number of edges - ";
+    cin >> m;
+    int g[MN][MN];
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            g[i][j] = -1;
+        }
+    }
+    cout<<"Enter the edges (u, v, weight)-\n";
+    for (int i = 0; i < m; i++) {
+        int u, v, w;
+        cin >> u >> v >> w;
+        g[u][v] = w;
+        g[v][u] = w;
+    }
+    int source;
+    cout << "Enter Akshay's house index -  ";
+    cin >> source;
+    dijkstra(g, n, source);
+    return 0;
+}
