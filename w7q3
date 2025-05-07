@@ -1,0 +1,53 @@
+#include<iostream>
+#include<vector>
+#include<climits>
+using namespace std;
+
+int shortPth(vector<vector<int> > &g,int s,int d,int k)
+{
+    if(k==0&&s==d)
+        return 0;
+    if(k==0)
+        return INT_MAX;
+    if(k==1&&g[s][d]!=0)
+        return g[s][d];
+    if(k==1)
+        return INT_MAX;
+    int n=g.size();
+    int minW=INT_MAX;
+    for(int v=0;v<n;v++)
+	{
+        if(g[s][v]!=0)
+		{
+            int subPath=shortPth(g,v,d,k-1);
+            if(subPath!=INT_MAX)
+                minW=min(minW,g[s][v]+subPath);
+        }
+    }
+    return minW;
+}
+int main()
+{
+    int n,k,s,d;
+    cout<<"Enter the number of vertices - ";
+    cin>>n;
+    vector<vector<int> > g(n,vector<int>(n,0));
+    cout<<"Enter the adjacency matrix (use 0 for no edge):\n";
+    for(int i=0;i<n;i++)
+	{
+        for(int j=0;j<n;j++)
+            cin>>g[i][j];
+    }
+    cout<<"Enter the source vertex - ";
+    cin>>s;
+    cout<<"Enter the destination vertex - ";
+    cin>>d;
+    cout<<"Enter the number of edges (k) - ";
+    cin>>k;
+    int result=shortPth(g,s,d,k);
+    if(result==INT_MAX)
+        cout<<"No path exists with exactly "<<k<<" edges.\n";
+    else
+        cout<<"The weight of the shortest path with exactly "<<k<<" edges is - "<<result<<endl;
+    return 0;
+}
