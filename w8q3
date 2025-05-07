@@ -1,0 +1,77 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int findparent(int u, vector<int>& parent) {
+    if (parent[u] == u)
+        return u;
+    return parent[u] = findparent(parent[u], parent); // Path compression
+}
+
+void addingedge(int u, int v, vector<int>& parent) {
+    int pu = findparent(u, parent);
+    int pv = findparent(v, parent);
+    if (pu != pv)
+        parent[pu] = pv;
+}
+
+int main() {
+    int V;
+    cout << "Enter the number of vertices: ";
+    cin >> V;
+
+    // Input adjacency matrix
+    vector<vector<int>> adjMatrix(V, vector<int>(V, 0));
+    cout << "Enter the adjacency matrix (0 for no edge):\n";
+    for (int i = 0; i < V; i++) {
+        for (int j = 0; j < V; j++) {
+            cin >> adjMatrix[i][j];
+        }
+    }
+
+    // Create the edge list from the adjacency matrix
+    vector<vector<int>> edges;
+    for (int i = 0; i < V; i++) {
+        for (int j = i + 1; j < V; j++) {  // Only need to consider the upper triangle for undirected graph
+            if (adjMatrix[i][j] != 0) {
+                edges.push_back({i, j, adjMatrix[i][j]});
+            }
+        }
+    }
+
+    // Sort edges in descending order of weight (for maximum spanning tree)
+    for (int i = 0; i < edges.size() - 1; i++) {
+        for (int j = i + 1; j < edges.size(); j++) {
+            if (edges[i][2] < edges[j][2]) {
+                swap(edges[i][0], edges[j][0]);
+                swap(edges[i][1], edges[j][1]);
+                swap(edges[i][2], edges[j][2]);
+            }
+        }
+    }
+
+    // Kruskal's algorithm to find the Maximum Spanning Tree
+    vector<int> parent(V);
+    for (int i = 0; i < V; i++) {
+        parent[i] = i;
+    }
+
+    int count = 0;
+    int maxBudget = 0;
+    cout << "Edges in Maximum Spanning Tree:\n";
+    for (int i = 0; i < edges.size() && count < V - 1; i++) {
+        int u = edges[i][0];
+        int v = edges[i][1];
+        int wt = edges[i][2];
+        if (findparent(u, parent) != findparent(v, parent)) {
+            addingedge(u, v, parent);
+            cout << "Edge: " << u << " - " << v << " Weight: " << wt << endl;
+            maxBudget += wt;
+            count++;
+        }
+    }
+
+    cout << "Total maximum budget for the project: " << maxBudget << endl;
+
+    return 0;
+}
