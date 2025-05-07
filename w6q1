@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+#include <stack>
+using namespace std;
+bool dfs(int st, int end, int V, vector<vector<int>>& A) {
+    vector<int> visited(V, 0);
+    stack<int> S;
+    S.push(st);
+    visited[st] = 1;
+    while(!S.empty()) {
+        int node = S.top();
+        S.pop();
+        if (node == end) return true;
+        for (int i = 0; i < V; ++i) {
+            if (A[node][i] == 1 && !visited[i]) {
+                visited[i] = 1;
+                S.push(i);
+            }
+        }
+    }
+    return false;
+}
+int main() {
+    int v, e, a, b;
+    cout << "Enter number of vertices - ";
+    cin >> v;
+    vector<vector<int>> A(v, vector<int>(v, 0));
+    cout << "Enter number of edges - ";
+    cin >> e;
+    cout << "Enter edges (pairs of nodes in range 0 to " << v - 1 << ") - ";
+    for (int i = 0; i < e; ++i) {
+        cin >> a >> b;
+        if (a >= v || b >= v || a < 0 || b < 0) {
+            cout << "Invalid edge! Ensure nodes are in range (0 to " << v - 1 << ")." << endl;
+            --i;
+            continue;
+        }
+        A[a][b] = 1;
+        A[b][a] = 1;
+    }
+    int start, end;
+    cout << "Enter start node (0 to " << v - 1 << ") - ";
+    cin >> start;
+    cout << "Enter end node (0 to " << v - 1 << ") - ";
+    cin >> end;
+    if (start >= v || end >= v || start < 0 || end < 0) {
+        cout << "Invalid node! Ensure nodes are in range (0 to " << v - 1 << ")." << endl;
+        return 1;
+    }
+    cout << (dfs(start, end, v, A) ? "Path exists" : "No path exists") << endl;
+    return 0;
+}
