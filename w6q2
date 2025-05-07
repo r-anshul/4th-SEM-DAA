@@ -1,0 +1,47 @@
+#include<iostream>
+using namespace std;
+int queue[50], front = -1, rear = -1;
+void enqueue(int x) {
+    if(front == -1) front = 0;
+    rear++;
+    queue[rear] = x;
+}
+int dequeue() {
+    int x = queue[front];
+    if(front == rear) front = rear = -1;
+    else front++;
+    return x;
+}
+bool bfs(int v, int mat[50][50]) {
+    int color[50];
+    for(int i = 0; i < v; i++) color[i] = -1;
+    for(int start = 0; start < v; start++) {
+        if(color[start] == -1) {
+            enqueue(start);
+            color[start] = 0;
+            while(front != -1) {
+                int u = dequeue();
+                for(int i = 0; i < v; i++) {
+                    if(mat[u][i] == 1) {
+                        if(color[i] == -1) {
+                            color[i] = 1 - color[u];
+                            enqueue(i);
+                        } else if(color[i] == color[u]) return false;
+                    }
+                }
+            }
+        }
+    }
+    return true;
+}
+int main() {
+    int v, mat[50][50];
+    cout << "Enter number of vertices - ";
+    cin >> v;
+    cout << "Enter adjacency matrix - " << endl;
+    for(int i = 0; i < v; i++)
+        for(int j = 0; j < v; j++)
+            cin >> mat[i][j];
+    if(bfs(v, mat)) cout << "Bipartite Graph";
+    else cout << "Not a Bipartite Graph";
+}
